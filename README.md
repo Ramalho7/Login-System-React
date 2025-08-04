@@ -2,21 +2,28 @@
 
 Um aplicativo web full-stack completo demonstrando um sistema de autenticação seguro utilizando React, Express e JSON Web Tokens (JWT).
 
-![Badge de Licença](https://img.shields.io/badge/licença-MIT-blue)
 ![Badge de Versão](https://img.shields.io/badge/versão-1.0.0-green)
 
 ## 📋 Índice
 
-- [Visão Geral](#visão-geral)
-- [Tecnologias Utilizadas](#tecnologias-utilizadas)
-- [Recursos do Projeto](#recursos-do-projeto)
-- [Estrutura do Projeto](#estrutura-do-projeto)
-- [Configuração e Instalação](#configuração-e-instalação)
-- [Uso](#uso)
-- [Fluxo de Autenticação](#fluxo-de-autenticação)
-- [Implementação Técnica](#implementação-técnica)
-- [Segurança](#segurança)
-- [Possíveis Melhorias](#possíveis-melhorias)
+- [Sistema de Autenticação React com JWT](#sistema-de-autenticação-react-com-jwt)
+  - [📋 Índice](#-índice)
+  - [📄 Visão Geral](#-visão-geral)
+  - [🛠️ Tecnologias Utilizadas](#️-tecnologias-utilizadas)
+    - [Frontend](#frontend)
+    - [Backend](#backend)
+  - [✨ Recursos do Projeto](#-recursos-do-projeto)
+  - [📁 Estrutura do Projeto](#-estrutura-do-projeto)
+  - [⚙️ Configuração e Instalação](#️-configuração-e-instalação)
+    - [Pré-requisitos](#pré-requisitos)
+    - [Instalação](#instalação)
+  - [🚀 Uso](#-uso)
+  - [🔄 Fluxo de Autenticação](#-fluxo-de-autenticação)
+  - [🔍 Implementação Técnica](#-implementação-técnica)
+    - [JWT (JSON Web Token)](#jwt-json-web-token)
+    - [Contexto de Autenticação](#contexto-de-autenticação)
+    - [Proteção de Rotas](#proteção-de-rotas)
+  - [🔒 Segurança](#-segurança)
 
 ## 📄 Visão Geral
 
@@ -107,10 +114,6 @@ react-job/
    http://localhost:5173
    ```
 
-### Credenciais padrão:
-- **Email**: admin@email.com
-- **Senha**: 123456
-
 ## 🔄 Fluxo de Autenticação
 
 1. **Registro do Usuário**:
@@ -161,14 +164,3 @@ react-job/
 - Middleware de autenticação para verificação de token
 
 ---
-
-## 📝 Licença
-
-Este projeto está licenciado sob a Licença MIT - veja o arquivo LICENSE para detalhes.
-
-## 🙏 Reconhecimentos
-
-- [React](https://react.dev/)
-- [Express](https://expressjs.com/)
-- [Tailwind CSS](https://tailwindcss.com/)
-- [JWT](https://jwt.io/)
