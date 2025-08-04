@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import jwt from "jsonwebtoken";
 import authRoutes from "./routes/auth.js";
-import authMiddleware from "./middleware/authMiddleware.js";
+import authenticateToken from "./middleware/authMiddleware.js";
 
 const app = express();
 const SECRET = "chave-secreta-jwt";
@@ -16,17 +16,11 @@ app.get("/", (req, res) => {
   res.send("Hello, world!");
 });
 
-app.get("/dashboard", (req, res) => {
+app.get("/dashboard", authenticateToken, (req, res) => {
   try {
-    const token = req.headers.authorization?.split(" ")[1];
-    if (!token) {
-      return res.status(401).json({ message: "Token não fornecido" });
-    }
-
-    const decoded = jwt.verify(token, SECRET);
     const storedUserData = JSON.parse(req.headers["x-user-data"] || "[]");
 
-    const user = storedUserData.find((u) => u.email === decoded.email);
+    const user = storedUserData.find((u) => u.email === req.user.email);
 
     if (!user) {
       return res.status(404).json({ message: "Usuário não encontrado" });

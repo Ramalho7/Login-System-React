@@ -24,7 +24,7 @@ router.post("/login", (req, res) => {
       return res.status(401).json({ message: "Credenciais inválidas" });
     }
 
-    const token = jwt.sign({ name: user.name, email: user.email }, SECRET, { expiresIn: "12h" });
+    const token = jwt.sign({ name: user.name, email: user.email }, SECRET, { expiresIn: "10s" });
 
     res.json({ token });
   } catch (error) {

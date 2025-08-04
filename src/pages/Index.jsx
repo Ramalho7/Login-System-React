@@ -1,3 +1,6 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
+
 const steps = [
   { text: "Criação da interface de login" },
   { text: "Implementação do backend para autenticação e geração do JWT" },
@@ -14,10 +17,11 @@ const IndexPage = () => {
       <p className="text-xl">Objetivo do projeto: realizar autenticação com React + JWT e react-router</p>
       <div className="steps container bg-gray-200 rounded-lg shadow-md flex flex-col mb-6 mt-6 p-6 text-center items-center">
         <h1 className="font-semibold mb-4 text-2xl text-black-600 flex items-center">
-          <span className="mr-1">📝</span> Passos:</h1>
+          <FontAwesomeIcon icon={faCheckCircle} className="mr-2 text-green-500" /> Passos:</h1>
         <ul className="space-y-4">
           {steps.map((step, idx) => (
             <li key={idx} className="flex items-center text-lg">
+              <FontAwesomeIcon icon={faCheckCircle} className="text-green-500 mr-2" />
               <span className="mr-2">{idx + 1}.</span>
               <span>{step.text}</span>
             </li>
