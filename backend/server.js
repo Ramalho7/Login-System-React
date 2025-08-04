@@ -1,9 +1,12 @@
 import express from "express";
 import cors from "cors";
+import jwt from "jsonwebtoken";
 import authRoutes from "./routes/auth.js";
 import authMiddleware from "./middleware/authMiddleware.js";
 
 const app = express();
+const SECRET = "chave-secreta-jwt";
+
 app.use(cors());
 app.use(express.json());
 
@@ -13,12 +16,34 @@ app.get("/", (req, res) => {
   res.send("Hello, world!");
 });
 
-app.get("/dashboard", authMiddleware, (req, res) => {
-  res.json({
-    message: "Bem-vindo ao dashboard!",
-    user: req.user, 
-    timestamp: new Date().toISOString(),
-  });
+app.get("/dashboard", (req, res) => {
+  try {
+    const token = req.headers.authorization?.split(" ")[1];
+    if (!token) {
+      return res.status(401).json({ message: "Token não fornecido" });
+    }
+
+    const decoded = jwt.verify(token, SECRET);
+    const storedUserData = JSON.parse(req.headers["x-user-data"] || "[]");
+
+    const user = storedUserData.find((u) => u.email === decoded.email);
+
+    if (!user) {
+      return res.status(404).json({ message: "Usuário não encontrado" });
+    }
+
+    res.json({
+      message: "Bem-vindo ao dashboard!",
+      user: {
+        username: user.username,
+        email: user.email,
+      },
+      timestamp: new Date().toISOString(),
+    });
+  } catch (error) {
+    console.error("Erro no backend:", error);
+    res.status(500).json({ message: "Erro interno no servidor" });
+  }
 });
 
 const PORT = process.env.PORT || 3000;

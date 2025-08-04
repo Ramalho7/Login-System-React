@@ -4,22 +4,33 @@ import jwt from "jsonwebtoken";
 const router = express.Router();
 
 const SECRET = "chave-secreta-jwt";
-const mockUser = {
-  email: "admin@email.com",
-  password: "123456",
-  name: "Admin"
-};
 
 router.post("/login", (req, res) => {
-  const { email, password } = req.body;
+  try {
+    const { email, password } = req.body;
 
-  if (email !== mockUser.email || password !== mockUser.password) {
-    return res.status(401).json({ message: "Credenciais inválidas" });
+    if (!email || !password) {
+      return res.status(400).json({ message: "E-mail e senha são obrigatórios" });
+    }
+
+    const storedUserData = JSON.parse(req.headers["x-user-data"] || "[]");
+
+    const user = storedUserData.find(
+      (user) => user.email === email && user.password === password
+    );
+    console.log("Usuário encontrado:", user);
+
+    if (!user) {
+      return res.status(401).json({ message: "Credenciais inválidas" });
+    }
+
+    const token = jwt.sign({ name: user.name, email: user.email }, SECRET, { expiresIn: "12h" });
+
+    res.json({ token });
+  } catch (error) {
+    console.error("Erro no backend:", error);
+    res.status(500).json({ message: "Erro interno no servidor" });
   }
-
-  const token = jwt.sign({ name: mockUser.name, email: mockUser.email }, SECRET, { expiresIn: "12h" });
-
-  res.json({ token });
 });
 
 export default router;

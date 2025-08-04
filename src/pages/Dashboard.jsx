@@ -1,34 +1,44 @@
-import { useEffect, useState } from "react"
-import axios from "axios"
-import { useAuth } from "../context/AuthContext"
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { useAuth } from "../context/AuthContext";
 
 export default function Dashboard() {
-    const { token, logout } = useAuth()
-    const [data, setData] = useState(null)
-    const [userName, setUserName] = useState("")
+    const { token, logout } = useAuth();
+    const [data, setData] = useState(null);
+    const [userName, setUserName] = useState("");
 
     useEffect(() => {
         if (token) {
             try {
-                const payload = JSON.parse(atob(token.split('.')[1]))
-                setUserName(payload.name || "Usuário")
+                const storedUserData = JSON.parse(localStorage.getItem("userData")) || [];
+                const user = storedUserData.find((user) => user.email === token.email);
+                setUserName(user ? user.username : "Usuário"); 
             } catch (error) {
-                setUserName("Usuário")
+                console.error("Erro ao acessar o localStorage:", error);
+                setUserName("Usuário");
             }
         }
-    }, [token])
+    }, [token]);
 
     useEffect(() => {
-        if (token) {
-            console.log("Token sendo enviado:", token);
-            axios
-                .get("http://localhost:3000/dashboard", {
-                    headers: { Authorization: `Bearer ${token}` },
-                })
-                .then((res) => setData(res.data))
-                .catch((err) => console.error("Erro na requisição:", err));
-        }
-    }, [token]);
+    if (token) {
+        console.log("Token sendo enviado:", token);
+        const storedUserData = JSON.parse(localStorage.getItem("userData")) || [];
+        
+        axios
+            .get("http://localhost:3000/dashboard", {
+                headers: { 
+                    Authorization: `Bearer ${token}`,
+                    "x-user-data": JSON.stringify(storedUserData)
+                },
+            })
+            .then((res) => {
+                setData(res.data);
+                setUserName(res.data.user.username || userName);
+            })
+            .catch((err) => console.error("Erro na requisição:", err));
+    }
+}, [token]);
 
     if (!token) {
         return (
@@ -85,5 +95,5 @@ export default function Dashboard() {
                 </div>
             </div>
         </div>
-    )
+    );
 }
